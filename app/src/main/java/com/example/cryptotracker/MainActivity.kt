@@ -12,8 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cryptotracker.core.navigation.AdaptiveCoinListDetailsPane
 import com.example.cryptotracker.core.presentation.util.ObserveAsEvents
 import com.example.cryptotracker.core.presentation.util.toString
+import com.example.cryptotracker.crypto.presentation.coin_details.CoinDetailsScreen
 import com.example.cryptotracker.crypto.presentation.coin_list.CoinListEvent
 import com.example.cryptotracker.crypto.presentation.coin_list.CoinListScreen
 import com.example.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
@@ -23,33 +25,13 @@ import org.koin.androidx.compose.koinViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             CryptoTrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val viewModel = koinViewModel<CoinListViewModel>()
-                    val state by viewModel.state.collectAsStateWithLifecycle()
-                    // We collect the state in a lifecycle aware manner
-                    // We stop collecting when the app goes in background
-
-                    val context = LocalContext.current
-
-                    ObserveAsEvents(events = viewModel.events) { event ->
-                        when (event) {
-                            is CoinListEvent.Error -> {
-                                Toast.makeText(
-                                    context,
-                                    event.error.toString(context),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    }
-
-                    CoinListScreen(
-                        state = state,
+                    AdaptiveCoinListDetailsPane(
                         modifier = Modifier.padding(innerPadding)
                     )
+
                 }
             }
         }

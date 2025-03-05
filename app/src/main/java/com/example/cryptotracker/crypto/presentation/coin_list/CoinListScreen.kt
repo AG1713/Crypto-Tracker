@@ -23,8 +23,9 @@ import com.example.cryptotracker.ui.theme.CryptoTrackerTheme
 // rather than making different states as in MVVM
 @Composable
 fun CoinListScreen(
-    modifier: Modifier = Modifier,
     state: CoinListState,
+    onAction: (CoinListAction) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     if (state.isLoading) {
@@ -43,7 +44,7 @@ fun CoinListScreen(
             items(state.coins) { coinUI ->
                 CoinListItem(
                     coinUI = coinUI,
-                    onClick = { /*TODO*/ },
+                    onClick = { onAction(CoinListAction.OnCoinClicked(coinUI)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 HorizontalDivider()
@@ -65,6 +66,7 @@ fun CoinListScreenPreview(modifier: Modifier = Modifier) {
                     previewCoin.copy(id = it.toString())
                 }
             ),
+            onAction = {},
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

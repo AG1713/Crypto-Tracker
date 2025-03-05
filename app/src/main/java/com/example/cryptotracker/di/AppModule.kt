@@ -14,7 +14,9 @@ val appModule = module {
     single { HttpClientFactory.create(CIO.create()) } // Singleton
 //    single { RemoteCoinDataSource(get()) } // get() looks through the app module to automatically
 //    resolve
-    singleOf(::RemoteCoinDataSource).bind<CoinDataSource>() // More or less the same as above line
+    singleOf(::RemoteCoinDataSource)/* the same as above line */.bind<CoinDataSource>()
+    // .bind<CoinDataSource>() ensures that when something needs a CoinDataSource, Koin provides an
+    // instance of RemoteCoinDataSource.
 
     viewModelOf(::CoinListViewModel)
 }
